@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Face Landmarks</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Face Landmarks</h1>
+    <p>Zrób zdjęcie kamerką, a serwer wykryje punkty charakterystyczne twarzy.</p>
+  </header>
+
+  <main>
+    <section class="card">
+      <div class="stage">
+        <video id="video" autoplay playsinline muted></video>
+        <canvas id="canvas"></canvas>
+      </div>
+
+      <div class="controls">
+        <button id="startBtn">Włącz kamerkę</button>
+        <button id="snapBtn" class="primary" disabled>Zrób zdjęcie</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
