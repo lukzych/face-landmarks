@@ -35,5 +35,5 @@ build/
 
 .env
 pgdata/
-
+.devcontainer/
 uploads/

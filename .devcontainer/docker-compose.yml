@@ -7,5 +7,3 @@ services:
 
   db:
     image: postgres:17
-    environment:
-      POSTGRES_PASSWORD: postgres
