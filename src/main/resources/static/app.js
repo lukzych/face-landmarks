@@ -26,11 +26,11 @@ fileInput.addEventListener("change", async () => {
 function showOnCanvas(file) {
   const img = new Image();
   img.onload = () => {
-    canvas.width = img.naturalWidth;      // canvas dostaje prawdziwy rozmiar zdjęcia
+    canvas.width = img.naturalWidth;     
     canvas.height = img.naturalHeight;
-    ctx.drawImage(img, 0, 0);             // rysuje zdjęcie od lewego górnego rogu
-    video.style.display = "none";         // chowa podgląd kamerki, jeśli był
-    URL.revokeObjectURL(img.src);         // zwalnia pamięć po tymczasowym adresie
+    ctx.drawImage(img, 0, 0);             
+    video.style.display = "none";         
+    URL.revokeObjectURL(img.src);         
   };
-  img.src = URL.createObjectURL(file);    // tymczasowy adres do pliku z dysku użytkownika
+  img.src = URL.createObjectURL(file);
 }
