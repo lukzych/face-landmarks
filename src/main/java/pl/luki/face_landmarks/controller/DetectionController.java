@@ -1,10 +1,5 @@
 package pl.luki.face_landmarks.controller;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.UUID;
-import java.nio.file.Path;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,25 +9,35 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+
+import pl.luki.face_landmarks.service.LandmarkService;
+
 
 @RestController 
 @RequestMapping("/api")
 public class DetectionController {
     
+    private final LandmarkService landmarkService;
 
-    @PostMapping(path = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ResponseEntity<?> handleFileUpload(@RequestParam("file") MultipartFile file){
-		
-		try {
-            Path dir = Paths.get("/workspace/uploads");
-            Files.createDirectories(dir);                         
-            String filename = UUID.randomUUID() + ".jpg";         
-            file.transferTo(dir.resolve(filename));
-            return ResponseEntity.ok("File uploaded successfully: " + filename);
+     public DetectionController(LandmarkService landmarkService) {
+        this.landmarkService = landmarkService;
+    }
+
+
+    @PostMapping(path = "/detect", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> detect(@RequestParam("file") MultipartFile file) {
+        try {
+            BufferedImage img = ImageIO.read(file.getInputStream());
+            if (img == null) {
+                return ResponseEntity.badRequest().body("Nieobsługiwany format zdjęcia");
+            }
+            return ResponseEntity.ok(landmarkService.detect(img));
         } catch (Exception e) {
-            e.printStackTrace();                                  
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Błąd zapisu: " + e.getMessage());     
+                    .body("Błąd wykrywania: " + e.getMessage());
         }
-	}
+    }
 }
